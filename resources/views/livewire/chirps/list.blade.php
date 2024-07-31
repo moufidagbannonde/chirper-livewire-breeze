@@ -8,6 +8,7 @@ use Livewire\Volt\Component;
 new class extends Component {
     public Collection $chirps;
     // mise à jour du composant pour la modification d'un chirp
+
     public ?Chirp $editing = null;
     // fonction permettant de supprimer un chirp
     public function delete(Chirp $chirp): void
@@ -35,6 +36,7 @@ new class extends Component {
     {
         // l"élément en cours à éditer prendra la valeur modifiée 
         $this->editing = $chirp;
+
         // reprise de l'ensemble des chirps
         $this->getChirps();
     }
@@ -68,7 +70,7 @@ new class extends Component {
                         modification d'un chirp
                         --}}
                         @unless ($chirp->created_at->eq($chirp->updated_at))
-                            <small class="text-sm text-gray-600">&middot; {{ __('edited') }}</small>
+                            <small class="text-sm text-gray-600"> &middot; {{ __('edited') }}</small>
                         @endunless
                     </div>
                     {{--
@@ -86,30 +88,18 @@ new class extends Component {
                                 </button>
                             </x-slot>
                             <x-slot name="content">
-                                {{--
-                                button d'editation
-                                 --}}
-                                <x-dropdown-link wire:click="edit({{ $chirp->id}})">
-                                    {{ __('Modifier')}}
-                                </x-dropdown-link>
-                                {{--
-                                    button de suppression
-                                --}}
-                                <x-dropdown-link wire:click="delete({{ $chirp->id}})" wire:confirm="Voulez-vous vraiment supprimer ce chirp ?">
-                                    {{ __('Supprimer')}}
+                                <x-dropdown-link wire:click="edit({{ $chirp->id }})">
+                                    {{ __('Edit') }}
                                 </x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
-
                     @endif
                 </div>
                 @if ($chirp->is($editing))
                     <livewire:chirps.edit :chirp="$chirp" :key="$chirp->id" />
                 @else
-                    <p class="mt-4 text-lg text-gray-900">
-                        {{ $chirp->message }}
-                    </p>
-                @endif
+                    <p class="mt-4 text-lg text-gray-900">{{ $chirp->message }}</p>
+                @endif 
             </div>
         </div>
     @endforeach 

@@ -1,8 +1,8 @@
 <?php
 
 // mettre à jour un chirp 
-use App\Models\Chirp;
-use Livewire\Attributes\Validate;
+use App\Models\Chirp; 
+use Livewire\Attributes\Validate; 
 use Livewire\Volt\Component;
 
 new class extends Component {
@@ -11,6 +11,7 @@ new class extends Component {
 
     // validation des champs 
     #[Validate('required|string|max:255')]
+    public string $message = '';
     // déclaration d'une propriété $message comme un string vide
     public function mount(): void
     {
