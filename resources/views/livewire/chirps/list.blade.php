@@ -9,6 +9,16 @@ new class extends Component {
     public Collection $chirps;
     // mise à jour du composant pour la modification d'un chirp
     public ?Chirp $editing = null;
+    // fonction permettant de supprimer un chirp
+    public function delete(Chirp $chirp): void
+    {
+        // autorisation de la suppression d'un chirp
+        $this->authorize('delete', $chirp);
+        // suppression d'un chirp
+        $chirp->delete();
+        // retour sur l'ensemble des chirps
+        $this->getChirps();
+    }
     public function mount(): void
     {
         $this->getChirps();
@@ -32,7 +42,7 @@ new class extends Component {
     #[On('chirp-edit-canceled')]
     #[On('chirp-updated')]
     // fonction permettant de ne pas afficher le formulaire d'édition
-    public function disableEditing(): void 
+    public function disableEditing(): void
     {
         // mettre la propriété editing sur null pour ne plus afficher le formulaire d'édition
         $this->editing = null;
@@ -76,8 +86,17 @@ new class extends Component {
                                 </button>
                             </x-slot>
                             <x-slot name="content">
+                                {{--
+                                button d'editation
+                                 --}}
                                 <x-dropdown-link wire:click="edit({{ $chirp->id}})">
                                     {{ __('Modifier')}}
+                                </x-dropdown-link>
+                                {{--
+                                    button de suppression
+                                --}}
+                                <x-dropdown-link wire:click="delete({{ $chirp->id}})" wire:confirm="Voulez-vous vraiment supprimer ce chirp ?">
+                                    {{ __('Supprimer')}}
                                 </x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
